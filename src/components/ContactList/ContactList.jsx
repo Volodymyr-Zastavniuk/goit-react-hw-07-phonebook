@@ -1,12 +1,13 @@
 import React from 'react';
 import ContactListItem from './ContactListItem/ContactListItem';
 import { useSelector } from 'react-redux';
-import { getContacts, getFilterValue } from 'redux/selectors';
+import { getContacts, getFilterValue, getIsLoading } from 'redux/selectors';
 import './ContactList.css';
 
 const ContactList = () => {
   const contacts = useSelector(getContacts);
   const filterValue = useSelector(getFilterValue);
+  const isLoading = useSelector(getIsLoading);
 
   const getFilteredContacts = () => {
     const normalizedFilter = filterValue.toLowerCase().trim();
@@ -17,11 +18,17 @@ const ContactList = () => {
   const filteredContacts = getFilteredContacts();
 
   return (
-    <ul className="contact-list">
-      {filteredContacts.map(contact => {
-        return <ContactListItem key={contact.id} contact={contact} />;
-      })}
-    </ul>
+    <>
+      {contacts.length === 0 && !isLoading && (
+        <p>Please add some contacts to the list</p>
+      )}
+
+      <ul className="contact-list">
+        {filteredContacts.map(contact => {
+          return <ContactListItem key={contact.id} contact={contact} />;
+        })}
+      </ul>
+    </>
   );
 };
 

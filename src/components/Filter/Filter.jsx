@@ -1,21 +1,20 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, getFilterValue } from 'redux/selectors';
-import { setFilterValue } from 'redux/filterSlice';
+import { setFilterValue } from 'redux/filter.slice';
 import './Filter.css';
 
 const Filter = () => {
   const dispatch = useDispatch();
   const filterValue = useSelector(getFilterValue);
   const contacts = useSelector(getContacts);
-  const isEmptyList = contacts.length === 0 ? true : false;
 
   return (
     <>
       <label className="filter">
         Find contact by name
         <input
-          disabled={isEmptyList}
+          disabled={contacts.length === 0}
           type="text"
           name="filter"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -28,7 +27,6 @@ const Filter = () => {
           className="filter__input"
         />
       </label>
-      {isEmptyList && <div>Please add some contacts to the list</div>}
     </>
   );
 };
